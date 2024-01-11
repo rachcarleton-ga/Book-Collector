@@ -10,6 +10,10 @@
         <p>Description: {{ book.description }}</p>
         <p>Published Year: {{ book.publishedyear }}</p>
       </div>
+      <div class="card-action">
+        <a href="{% url 'books_update' book.id %}">Edit</a>
+        <a href="{% url 'books_delete' book.id %}">Delete</a>
+      </div>
   </div>
 
 {% endblock %}
