@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
-from .models import Book
+from .models import Book, Reading
 from .forms import ReadingForm
 
 
@@ -42,4 +42,8 @@ class BookUpdate(UpdateView):
 
 class BookDelete(DeleteView):
     model = Book
+    success_url = '/books'
+
+class ReadingDelete(DeleteView):
+    model = Reading
     success_url = '/books'

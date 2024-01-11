@@ -26,13 +26,15 @@
     </form>
     <table class="striped">
       <thead>
-        <tr><th>Date</th><th>Time Reading</th></tr>
+        <tr><th>Date</th><th>Time</th></tr>
+        <th></th>
       </thead>
       <tbody>
         {% for reading in book.reading_set.all %}
           <tr>
             <td>{{reading.date}}</td>
             <td>{{reading.time}}</td>
+            <td><a href="{% url 'reading_delete' reading.id %}" class="btn">Delete Reading</a></td>
           </tr>
         {% endfor %}
       </tbody>
