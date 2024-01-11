@@ -2,8 +2,9 @@
 {% block content %}
 
 <h1>Book Details</h1>
-
-  <div class="card">
+<div class="row">
+  <div class="col s6">
+    <div class="card">
       <div class="card-content">
         <span class="card-title">{{ book.title }}</span>
         <p>Author: {{ book.author }}</p>
@@ -14,6 +15,40 @@
         <a href="{% url 'books_update' book.id %}">Edit</a>
         <a href="{% url 'books_delete' book.id %}">Delete</a>
       </div>
+    </div>
   </div>
+  <div class="col s6">
+    <form action="{% url 'add_reading' book.id %}" method="POST">
+      {% csrf_token %}
+      <!-- Render the inputs -->
+      {{ reading_form.as_p }}
+      <input type="submit" class="btn" value="Add Reading">
+    </form>
+    <table class="striped">
+      <thead>
+        <tr><th>Date</th><th>Time Reading</th></tr>
+      </thead>
+      <tbody>
+        {% for reading in book.reading_set.all %}
+          <tr>
+            <td>{{reading.date}}</td>
+            <td>{{reading.time}}</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
 
+<script>
+  const dateEl = document.getElementById('id_date');
+  M.Datepicker.init(dateEl, {
+    format: 'yyyy-mm-dd',
+    defaultDate: new Date(),
+    setDefaultDate: true,
+    autoClose: true
+  });
+  const selectEl = document.getElementById('id_meal');
+  M.FormSelect.init(selectEl);
+</script>
 {% endblock %}
