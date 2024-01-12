@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<h1>Bookmark List</h1>
+
+{% for bookmark in bookmark_list %}
+  <a href="{% url 'bookmarks_detail' bookmark.id %}">
+    <div class="card">
+        <div class="card-content">
+            <span class="card-title">{{ bookmark.name }}</span>
+            <p>Color: {{ bookmark.color }}</p>
+        </div>
+    </div>
+  </a>
+{% endfor %}
+
+{% endblock %}

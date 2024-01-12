@@ -16,6 +16,19 @@
         <a href="{% url 'books_delete' book.id %}">Delete</a>
       </div>
     </div>
+    {% for photo in book.photo_set.all %}
+    <img class="responsive-img card-panel" src="{{photo.url}}" alt="Book Photo">
+{% empty %}
+    <div class="card-panel teal-text center-align">No Photos Uploaded</div>
+{% endfor %}
+
+<!-- new code below -->
+<form action="{% url 'add_photo' book.id %}" enctype="multipart/form-data" method="POST" class="card-panel">
+    {% csrf_token %}
+    <input type="file" name="photo-file">
+    <br><br>
+    <button type="submit" class="btn">Upload Photo</button>
+</form>
   </div>
   <div class="col s6">
     <form action="{% url 'add_reading' book.id %}" method="POST">
@@ -41,6 +54,59 @@
     </table>
   </div>
 </div>
+
+<hr>
+<div class="row">
+  <div class="col s6">
+    <h3>{{ book.title }}'s Bookmarks</h3>
+    {% if book.bookmarks.count %}
+      {% for bookmark in book.bookmarks.all %}
+        <div class="card">
+          <div class="card-content">
+            <span class="card-title">
+              A <span style="color: {{ bookmark.color }}">{{ bookmark.color }}</span> {{ bookmark.name }}
+            </span>
+          </div>
+          <div class="card-action">
+            <form action="{% url 'unassoc_bookmark' book.id bookmark.id %}" method="POST">
+              {% csrf_token %}
+              <button type="submit" class="waves-effect waves-light btn-small">REMOVE
+                <i class="material-icons right">delete</i>
+              </button>
+            </form>
+          </div>
+        </div>
+      {% endfor %}
+    {% else %}
+      <h5>No Bookmarks</h5>
+    {% endif %}
+  </div>
+  <!-- Available bookmarks will come after this line -->
+  <div class="col s6">
+    <h3>Available Bookmarks</h3>
+    {% if bookmarks.count %}
+      {% for bookmark in bookmarks.all %}
+        <div class="card">
+          <div class="card-content">
+            <span class="card-title">
+              A <span style="color: {{ bookmark.color }}">{{ bookmark.color }}</span> {{ bookmark.name }}
+            </span>
+          </div>
+          <div class="card-action">
+            <form action="{% url 'assoc_bookmark' book.id bookmark.id %}" method="POST">
+              {% csrf_token %}
+              <button type="submit" class="waves-effect waves-light btn-small">ADD
+                <i class="material-icons right">add</i>
+            </form>
+          </div>
+        </div>
+      {% endfor %}
+    {% else %}
+      <h5>{{book.title}} Already Has All Bookmarks Available</h5>
+    {% endif %}
+  </div>
+</div>
+
 
 <script>
   const dateEl = document.getElementById('id_date');
